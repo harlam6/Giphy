@@ -15,7 +15,7 @@
 
   </div>
  
- <!-- id to create a form -->
+ <!-- id to create a form. the search id was going create a new class button and push to the top under anime-char-->
 
   <form id="anime-form">
     <label for="animesearch"> Add an Anime</label>
@@ -23,43 +23,58 @@
     <input id="search" type="submit" value="search">
   </form>
 
+<!-- gif id was where it was going to be displayed -->
   <div id="displaygifs">
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
-  $( document ).ready(function() {
+  $(document).ready(function() {
 
+// this array was going to be pushed onto the button-data-anime above. 
     var burgers = ["naruto"]
     $("data-anime").text(burgers);
+
+//onclick the button for each should put the anime-char and then noodles should assign the anime-char to data-anime. It displays giphy images, but not Naruto for some reason.
 
     $("#anime-char").on("click", function() {
       var noodles = $("#anime-char").attr("data-anime");
 
+//regristers API with a limit of 10 imgages and ratings of pg 13 and below 
+
       var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + noodles + "&limit=10&rating=pg-13&api_key=f3980d496591470384e10230b88c5012"
 
+//tried to console.noodles(however it's not properly defined)
       console.log(noodles);
 
+//uses Ajax to pull stuff from the API
       $.ajax({
           url: queryURL,
           method: "GET"
         })
 
+//.done what we use with the pulled data.
+//material below was applied from a prev assignment due to limited resources. 
+//however the functionalities are understood. They not yet completely memorized to replicate. 
+
         .done(function(response) {
           var results = response.data;
 
           for (var i = 0; i < results.length; i++) {
-
+//create a new div with listed as item
             var animediv = $("<div class='item'>");
+//created a rating variable that displays the results pulled from the api
             var rating = results[i].rating;
+//creates a Paragraph that stores the text and displays the rating
             var p = $("<p>").text("Rating: " + rating);
+//creates a new variable to create a img. <> are used for creating.
             var personImage = $("<img>");
-
+//assigns the attribute using source to the images. 
             personImage.attr("src", results[i].images.fixed_height.url);
-
+//pushes the variables to the animediv (new created div above)
             animediv.prepend(p);
             animediv.prepend(personImage);
-
+//suppose to push the animediv to the html div of #displaygifs and have them pushed ahead of the others. 
             $("#displaygifs").prepend(animediv);
           }
         });
