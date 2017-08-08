@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Giphy Game
+  </title>
+</head>
+
+<body>
+<!-- this creates a button with data-anime which stores an empty anime. previously before this had much more buttons listed below, but wanted to test with one-->
+  <div id="anime-char">
+    <button data-anime=""> naruto
+  </button>
+
+  </div>
+ 
+ <!-- id to create a form -->
+
+  <form id="anime-form">
+    <label for="animesearch"> Add an Anime</label>
+    <input type="text" id="anime-input">
+    <input id="search" type="submit" value="search">
+  </form>
+
+  <div id="displaygifs">
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+  $( document ).ready(function() {
+
+    var burgers = ["naruto"]
+    $("data-anime").text(burgers);
+
+    $("#anime-char").on("click", function() {
+      var noodles = $("#anime-char").attr("data-anime");
+
+      var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + noodles + "&limit=10&rating=pg-13&api_key=f3980d496591470384e10230b88c5012"
+
+      console.log(noodles);
+
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+
+        .done(function(response) {
+          var results = response.data;
+
+          for (var i = 0; i < results.length; i++) {
+
+            var animediv = $("<div class='item'>");
+            var rating = results[i].rating;
+            var p = $("<p>").text("Rating: " + rating);
+            var personImage = $("<img>");
+
+            personImage.attr("src", results[i].images.fixed_height.url);
+
+            animediv.prepend(p);
+            animediv.prepend(personImage);
+
+            $("#displaygifs").prepend(animediv);
+          }
+        });
+    });
+})
+  </script>
+</body>
+
+</html>
